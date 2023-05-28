@@ -1,23 +1,42 @@
-const { Schema, model } = require('mongoose');
+const { Schema, Types } = require('mongoose');
 
-const matchEmail=/^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
-// const matchEmail=/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+const dateToday = () => {
+  let currentDate = new Date();
+  let date = currentDate.toDateString()
+  let time = currentDate.toLocaleTimeString()
+  // console.log(`${date} at ${time}`);
+  return `${date} at ${time}`
+}
 
-const userSchema=new Schema(
-    {
-        username: { type: String, unique:true, required: true, trim:true },
-        email: { type: String, unique:true, required: true, match: matchEmail },
-        thoughts: [
-            {
-              type: Schema.Types.ObjectId,
-              ref: 'thought',
-            },
-          ],
-        friends: [
-            {
-              type: Schema.Types.ObjectId,
-              ref: 'user',
-            },
-          ],
+const reactionSchema = new Schema(
+  {
+    reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId(),
     },
+    reactionBody: {
+      type: String,
+      required: true,
+      maxlength: 280,
+    },
+    username: {
+      type: String,
+      required: true,
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now,
+      get: dateToday,
+
+    },
+  },
+  {
+    toJSON: {
+      getters: true,
+    },
+    id: false,
+  }
+
 )
+
+module.exports = reactionSchema;
