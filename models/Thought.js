@@ -1,13 +1,7 @@
 const { Schema, model } = require('mongoose');
 const reactions = require('./Reaction');
 
-const dateToday = () => {
-    let currentDate = new Date();
-    let date = currentDate.toDateString()
-    let time = currentDate.toLocaleTimeString()
-    // console.log(`${date} at ${time}`);
-    return `${date} at ${time}`
-}
+const dateToday = require('../utils/helpers')
 
 const thoughtSchema = new Schema(
     {
@@ -20,7 +14,7 @@ const thoughtSchema = new Schema(
         createdAt: {
             type: Date,
             default: Date.now,
-            get: dateToday,
+            get: (x) => dateToday(x),
         },
         username: {
             type: String,
@@ -30,7 +24,7 @@ const thoughtSchema = new Schema(
     },
     {
         toJSON: {
-            virtuals: true,
+            getters: true
         },
         id: false,
     }

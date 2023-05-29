@@ -1,12 +1,6 @@
 const { Schema, Types } = require('mongoose');
 
-const dateToday = () => {
-  let currentDate = new Date();
-  let date = currentDate.toDateString()
-  let time = currentDate.toLocaleTimeString()
-  // console.log(`${date} at ${time}`);
-  return `${date} at ${time}`
-}
+const dateToday = require('../utils/helpers')
 
 const reactionSchema = new Schema(
   {
@@ -26,8 +20,7 @@ const reactionSchema = new Schema(
     createdAt: {
       type: Date,
       default: Date.now,
-      get: dateToday,
-
+      get:(x)=> dateToday(x),
     },
   },
   {

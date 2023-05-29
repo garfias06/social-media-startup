@@ -1,7 +1,6 @@
 const { Schema, model } = require('mongoose');
 
 const matchEmail = /^([a-z0-9_\.-]+)@([\da-z\.-]+)\.([a-z\.]{2,6})$/;
-// const matchEmail=/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 
 const userSchema = new Schema(
     {

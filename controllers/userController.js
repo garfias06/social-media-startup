@@ -1,4 +1,4 @@
-const User = require('../models/User');
+const {User} = require('../models');
 
 // Gets all users
 const getUsers = async (req, res) => {
@@ -15,7 +15,7 @@ const getUsers = async (req, res) => {
 // Gets user by Id
 const getSingleUser = async (req, res) => {
     try {
-        const user = await User.findOne({ _id: req.params.userId }).select('-__v');
+        const user = await User.findOne({ _id: req.params.userId }).select('-__v').populate('thoughts').populate('friends');
 
         if (!user) {
             return res.status(404).json({ message: 'No user found' });

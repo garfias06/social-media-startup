@@ -1,4 +1,4 @@
-const Thought = require('../models/Thought');
+const {Thought, User} = require('../models');
 
 // Gets all thoughts
 const getThoughts = async (req, res) => {
@@ -27,7 +27,21 @@ const getSingleThought = async (req, res) => {
 const createThought = async (req, res) => {
     try {
         const newThought = await Thought.create(req.body);
-        res.json(newThought);
+        // test
+        const user=await User.findOneAndUpdate(
+            {_id: req.body.userId},
+            {$addToSet:{thoughts:newThought._id}},
+            {new:true}
+        );
+
+        if (!user) {
+            return res.status(404).json({
+              message: 'User not found',
+            });
+          }
+
+        res.json('Thought created');
+        // res.json(newThought);
     } catch (err) {
         res.status(500).json(err)
     }
@@ -55,7 +69,7 @@ const updateThought = async (req, res) => {
 // Deletes thought
 const deleteThought=async (req,res)=>{
 try {
-    const thoughtDelete=await Thought>Thought.findOneAndDelete(
+    const thoughtDelete=await Thought.findOneAndDelete(
         { _id: req.params.thoughtId },
         { $pull:{ thoughts: req.params.thoughtId }},
         { new: true }
@@ -70,6 +84,5 @@ try {
     res.status(500).json(err);
 }
 }
-
 
 module.exports = { getThoughts, getSingleThought, createThought, updateThought, deleteThought}
