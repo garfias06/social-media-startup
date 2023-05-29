@@ -9,6 +9,7 @@ const app = express();
 // Express Middleware.
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(routes)
 
 // Sync connection to DB .
 db.once('open', () => {
@@ -16,4 +17,5 @@ db.once('open', () => {
       console.log(`API server for ${activity} running on port ${PORT}!`);
     });
   });
+  
   
